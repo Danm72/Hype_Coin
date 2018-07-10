@@ -8,6 +8,7 @@ This project uses Spring Boot as a base. The project is written in Kotlin.
 ### How to Run
 		$ ./gradlew bootRun
 		$ gradle bootRun
+		$ java -jar HypeCoin.jar
 		
 Storage uses a H2 RDBMS in-memory database for simplicity. Swapping out the properties in `application.properties` for postgres/mysql would be needed for prod. 
 
