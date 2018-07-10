@@ -30,7 +30,8 @@ fun main(args: Array<String>) {
                 if (secondsElapsed <= RUN_TIME) {
                     client.sendMessage(session, "hello")
                 } else {
-                    print("\n SHUTTING DOWN CLIENT $index \n")
+                    val trueIndex = index +1
+                    print("\n SHUTTING DOWN CLIENT $trueIndex \n")
                     scheduledFutures[index].cancel(true)
                 }
             }, 1000)

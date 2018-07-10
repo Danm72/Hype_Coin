@@ -1,6 +1,8 @@
 package hypecoin.models
 
 import hypecoin.generateHash
+import org.hibernate.annotations.NotFound
+import org.hibernate.annotations.NotFoundAction.*
 import java.util.*
 import javax.persistence.*
 
@@ -11,6 +13,7 @@ data class Message(
         var timestamp: Long = Date().time,
         var signedDigest: String,
         @Id @GeneratedValue
+        @NotFound(action = IGNORE)
         var id: Long = -1)
 
 @Entity

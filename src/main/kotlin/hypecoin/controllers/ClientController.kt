@@ -62,11 +62,15 @@ class ClientController : TextWebSocketHandler() {
                 logger.debug(String.format("New client registered #%s", sessionList.size))
             }
             MESSAGE -> {
-                val processSuccessful = mBlockchainHandler.processMessage(json = jsonData, publicKey = getClientKey(session))
-                if (processSuccessful) {
-                    logger.debug("Processed message")
-                } else {
-                    logger.debug("Failed to processed message")
+                try {
+                    val processSuccessful = mBlockchainHandler.processMessage(json = jsonData, publicKey = getClientKey(session))
+                    if (processSuccessful) {
+                        logger.debug("Processed message")
+                    } else {
+                        logger.debug("Failed to processed message")
+                    }
+                } catch (e: Exception) {
+                    logger.debug(String.format("Exception processing message %s", e.message))
                 }
             }
             BLOCKS -> {

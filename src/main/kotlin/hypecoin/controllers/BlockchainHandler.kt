@@ -65,6 +65,8 @@ class BlockchainHandlerImpl : BlockchainHandler {
 
             val savedMessage = messageRepo.save(it)
             queue.addToQueue(savedMessage)
+            logger.info(String.format("Message #%s added to Queue", savedMessage.id))
+
             if (queue.getQueueSize() >= QUEUE_LIMIT) {
                 processBlock()
             }
@@ -123,9 +125,13 @@ class BlockchainHandlerImpl : BlockchainHandler {
     }
 
     private fun processBlock() {
+        logger.info("Processing block")
+
         val blockOfMessages = queue.pluckBlockOfMessages()
         val messagesAsJson = jacksonObjectMapper().writeValueAsString(blockOfMessages)
         queue.removeBlockOfMessages(blockOfMessages, messageRepo)
+        logger.info(String.format("Emptying queue"))
+
 
         val previousBlock = blockRepo.findFirstByOrderByIdDesc()//todo optimise as query
         val previousHash = if (previousBlock.isPresent) previousBlock.get().hash else "0"
@@ -135,6 +141,8 @@ class BlockchainHandlerImpl : BlockchainHandler {
 
         val savedBlock = blockRepo.save(block)
         chain += savedBlock
+
+        logger.info(String.format("Processed block #%s", chain.size))
     }
 }
 
